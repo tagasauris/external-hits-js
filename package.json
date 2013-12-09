@@ -1,0 +1,25 @@
+{
+  "name": "external-hits-js",
+  "version": "0.0.1",
+  "description": "Tagasauris External HIT JS SDK",
+  "main": "",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tagasauris/external-hits-js.git"
+  },
+  "author": "10Clouds",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/tagasauris/external-hits-js/issues"
+  },
+  "dependencies": {
+    "grunt": "~0.4.2"
+  }
+}
