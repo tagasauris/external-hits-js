@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  </head>
+
+  <body>
+    <iframe id="externalHolder" src="http://10.0.1.173:8000/child.html?x=a&c=z"></iframe>
+    <script type="text/javascript">
+        var iframe       = document.getElementById('externalHolder').contentWindow,
+            eventMethod  = window.addEventListener ? 'addEventListener' : 'attachEvent',
+            eventer      = window[eventMethod],
+            messageEvent = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
+
+        var receiveMessage = function(event) {
+            console.log('Received response:  ', event.data, ' from: ', event.origin);
+
+            if (event.data == 'success') {
+              window.location = window.location.href + '&next=1';
+            }
+
+            iframe.postMessage({type: 'info', message: 'thx'}, 'http://10.0.1.173:8000/');
+        }
+
+        eventer(messageEvent, receiveMessage, false);
+    </script>
+  </body>
+</html>
