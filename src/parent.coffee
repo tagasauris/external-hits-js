@@ -1,13 +1,14 @@
 do (window, document) ->
-  if win.Tagasauris
+  if window.Tagasauris
     return
 
   include "utils.coffee"
   include "exceptions.coffee"
   include "common.coffee"
   include "messages.coffee"
+  include "clients/parent.coffee"
 
-  win.Tagasauris =
+  window.Tagasauris =
     VERSION: '0.0.1'
-    # Client: Client
+    Client: ParentClient
     Messages: Messages

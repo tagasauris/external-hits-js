@@ -1,6 +1,6 @@
-class Client extends Base
+class ChildClient extends BaseLogging
   constructor: (options={}) ->
-    @set 'logging', options.logging or false
+    super options
 
     if not options.state
       throw new Exception 'State is required'
@@ -16,6 +16,7 @@ class Client extends Base
     @set 'resultsUrl', options.resultsUrl
     @set '_requestTimeout', options.requestTimeout or 30000
     @set '_requestTimeoutCallback', options.requestTimeoutCallback or null
+    @set '_onStartListener', options.onStartListener or null
 
   getData: (options, callback) ->
     if typeof(options) is 'function'
@@ -94,7 +95,3 @@ class Client extends Base
 
     self.log "XHR Request Calling #{method} - #{url}"
     xhr.send body
-
-  log: (message) ->
-    if @get 'logging'
-      console.log "Tagasauris: #{message}"

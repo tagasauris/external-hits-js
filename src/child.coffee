@@ -1,5 +1,5 @@
 do (window, document) ->
-  if win.Tagasauris
+  if window.Tagasauris
     return
 
   include "utils.coffee"
@@ -11,10 +11,11 @@ do (window, document) ->
   include "models/media_object_item.coffee"
   include "models/score.coffee"
   include "models/transform_result.coffee"
+  include "clients/child.coffee"
 
-  win.Tagasauris =
+  window.Tagasauris =
     VERSION: '0.0.1'
-    Client: Client
+    ChildClient: ChildClient
     MediaObject: MediaObject
     MediaObjectItem: MediaObjectItem
     TransformResult: TransformResult
