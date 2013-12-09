@@ -20,4 +20,3 @@ do (window, document) ->
     MediaObjectItem: MediaObjectItem
     TransformResult: TransformResult
     Score: Score
-    Messages: Messages

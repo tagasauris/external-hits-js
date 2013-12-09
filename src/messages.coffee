@@ -2,6 +2,12 @@ class Messages extends BaseLogging
   constructor: (options={}) ->
     super options
 
+    if not options.window
+      throw new Exception 'Window is required'
+
+    if not options.target
+      throw new Exception 'Target is required'
+
     @set '_messageReceivedListener', options.messageReceivedListener or null
 
     # Browser test for proper listener and event method
@@ -11,13 +17,12 @@ class Messages extends BaseLogging
 
     # postMessage listener setup
     eventer messageEvent, @messageReceiver(@), false
-
-  isInIFrame: () ->
-    window.location isnt window.parent.location
+    @set '_window', options.window
+    @set '_target', options.target
 
   sendMessage: (type, message) ->
     @log "Sending message: #{type} - #{message}"
-    parent.postMessage type: type, message: message, doc.referrer
+    @_window.postMessage type: type, message: message, @_target
 
   messageReceiver: (self) ->
     (event) ->

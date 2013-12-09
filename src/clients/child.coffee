@@ -11,12 +11,16 @@ class ChildClient extends BaseLogging
     if not options.resultsUrl
       throw new Exception 'Results URL is required'
 
+    messages = new Messages
+      window: parent
+      target: document.referrer
+
     @set 'state', options.state
     @set 'sourceUrl', options.sourceUrl
     @set 'resultsUrl', options.resultsUrl
+    @set '_messages', options.messages
     @set '_requestTimeout', options.requestTimeout or 30000
     @set '_requestTimeoutCallback', options.requestTimeoutCallback or null
-    @set '_onStartListener', options.onStartListener or null
 
   getData: (options, callback) ->
     if typeof(options) is 'function'
@@ -55,6 +59,8 @@ class ChildClient extends BaseLogging
       qs.state = @get 'state'
 
     # Query
+    # Workaround for:
+    # https://github.com/10clouds/tagasauris/blob/master/tagasauris/data/middleware.py#L10
     qs.cookie_fix = 0
     encodedParams = urlEncode qs
     if encodedParams
