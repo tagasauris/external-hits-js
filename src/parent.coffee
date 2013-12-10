@@ -10,4 +10,4 @@ do (window, document) ->
 
   window.Tagasauris =
     VERSION: '0.0.1'
-    Client: ParentClient
+    ParentClient: ParentClient

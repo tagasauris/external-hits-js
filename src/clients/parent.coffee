@@ -11,12 +11,16 @@ class ParentClient extends BaseLogging
         throw new Exception 'Invalid iFrame ID'
 
     messages = new Messages
+      logging: options.logging
       window: options.iFrame.contentWindow
       target: options.iFrame.getAttribute 'src'
+      onSuccessCallback: options.onSuccessCallback or null
+      onErrorCallback: options.onErrorCallback or null
+
+    options.iFrame.onload = options.iFrameLoadedCallback or null
 
     @set '_iFrame', options.iFrame
-    @set '_messages', messages
-    @set '_onSuccessCallback', options.onSuccessCallback or null
-    @set '_onErrorCallback', options.onErrorCallback or null
+    @set 'messages', messages
 
   start: () ->
+    @messages.sendStartMessage('start')

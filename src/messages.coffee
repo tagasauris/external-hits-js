@@ -1,4 +1,6 @@
 class Messages extends BaseLogging
+  @types: ['success', 'info', 'warning', 'error', 'start']
+
   constructor: (options={}) ->
     super options
 
@@ -8,8 +10,6 @@ class Messages extends BaseLogging
     if not options.target
       throw new Exception 'Target is required'
 
-    @set '_messageReceivedListener', options.messageReceivedListener or null
-
     # Browser test for proper listener and event method
     eventMethod  = if window.addEventListener then 'addEventListener' else 'attachEvent'
     eventer      = window[eventMethod]
@@ -17,8 +17,14 @@ class Messages extends BaseLogging
 
     # postMessage listener setup
     eventer messageEvent, @messageReceiver(@), false
+
     @set '_window', options.window
     @set '_target', options.target
+
+    for type in Messages.types
+      key = toCamelCase("on_#{type}_callback")
+      if options[key]
+        @set key, options[key]
 
   sendMessage: (type, message) ->
     @log "Sending message: #{type} - #{message}"
@@ -26,14 +32,15 @@ class Messages extends BaseLogging
 
   messageReceiver: (self) ->
     (event) ->
-      self.log "Message received: #{event.data.type} - #{event.data.message}"
+      self.log "Message received: #{event.data.type} - #{event.data.message} from #{event.origin}"
 
       # TODO: check proper event.origin
-      if typeof(self._messageReceivedListener) is 'function'
-        self._messageReceivedListener event.data.type, event.data.message
+      key = toCamelCase("on_#{event.data.type}_callback")
+      if self[key] and typeof(self[key]) is 'function'
+        self.log "Runing callback - #{key}"
+        self[key](event.data.message)
 
-
-  for type in ['success', 'info', 'warning', 'error']
+  for type in Messages.types
     Messages::[toCamelCase("send_#{type}_message")] = do (type) ->
       (message) ->
         @sendMessage type, message

@@ -12,15 +12,16 @@ class ChildClient extends BaseLogging
       throw new Exception 'Results URL is required'
 
     messages = new Messages
+      logging: options.logging
       window: parent
       target: document.referrer
 
     @set 'state', options.state
     @set 'sourceUrl', options.sourceUrl
     @set 'resultsUrl', options.resultsUrl
-    @set '_messages', options.messages
-    @set '_requestTimeout', options.requestTimeout or 30000
-    @set '_requestTimeoutCallback', options.requestTimeoutCallback or null
+    @set 'messages', messages
+    @set 'requestTimeout', options.requestTimeout or 30000
+    @set 'requestTimeoutCallback', options.requestTimeoutCallback or null
 
   getData: (options, callback) ->
     if typeof(options) is 'function'
@@ -95,9 +96,9 @@ class ChildClient extends BaseLogging
     timeoutCallback = () ->
       xhr.abort()
       self.log "XHR Request Timeout #{method} - #{url}"
-      if typeof(self._requestTimeoutCallback) is 'function'
-        self._requestTimeoutCallback()
-    timeout = setTimeout timeoutCallback, @_requestTimeout
+      if typeof(self.requestTimeoutCallback) is 'function'
+        self.requestTimeoutCallback()
+    timeout = setTimeout timeoutCallback, @requestTimeout
 
     self.log "XHR Request Calling #{method} - #{url}"
     xhr.send body

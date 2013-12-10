@@ -2,32 +2,30 @@
 <html lang="en">
   <head>
     <head>
-        <script src="../../lib/parent.js"></script>
+        <script src="http://127.0.0.1:8000/lib/parent.js"></script>
     </head>
   </head>
 
   <body>
     <iframe id="externalHolder" src="http://10.0.1.173:8000/examples/tagging/child.html?x=a&c=z"></iframe>
     <script type="text/javascript">
-      var client = new Tagasauris.Client({
-        iFrame: 'externalHolder'
+      var client = new Tagasauris.ParentClient({
+        iFrame: 'externalHolder',
+        logging: true
       });
-      // var iframe       = document.getElementById('externalHolder').contentWindow,
-      //     eventMethod  = window.addEventListener ? 'addEventListener' : 'attachEvent',
-      //     eventer      = window[eventMethod],
-      //     messageEvent = eventMethod == 'attachEvent' ? 'onmessage' : 'message';
 
-      // var receiveMessage = function(event) {
-      //     console.log('Received response:  ', event.data, ' from: ', event.origin);
+      client.messages.onSuccessCallback = function() {
+        console.log('Parent onSuccessCallback');
+      }
 
-      //     if (event.data == 'success') {
-      //       window.location = window.location.href + '&next=1';
-      //     }
+      client.messages.onErrorCallback = function() {
+        console.log('Parent onErrorCallback');
+      }
 
-      //     iframe.postMessage({type: 'info', message: 'thx'}, 'http://10.0.1.173:8000/');
-      // }
-
-      // eventer(messageEvent, receiveMessage, false);
+      var iFrame = document.getElementById('externalHolder');
+      iFrame.onload = function () {
+        client.messages.sendErrorMessage('ala ma kota');
+      }
     </script>
   </body>
 </html>
