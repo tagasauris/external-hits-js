@@ -12,5 +12,5 @@ class BaseLogging extends Base
 
   log: (message) ->
     if @get 'logging'
-      console.log "Tagasauris: #{message}"
+      console.log "Tagasauris.#{@constructor.name}: #{message}"
 

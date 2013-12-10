@@ -1,5 +1,5 @@
 class Messages extends BaseLogging
-  @types: ['success', 'info', 'warning', 'error', 'start']
+  @types: ['start', 'started', 'success', 'error']
 
   constructor: (options={}) ->
     super options
@@ -22,22 +22,24 @@ class Messages extends BaseLogging
     @set '_target', options.target
 
     for type in Messages.types
-      key = toCamelCase("on_#{type}_callback")
+      key = toCamelCase("on_#{type}_receiver")
       if options[key]
         @set key, options[key]
 
-  sendMessage: (type, message) ->
-    @log "Sending message: #{type} - #{message}"
+  sendMessage: (type, message='') ->
+    @log "Sending message: #{type}"
     @_window.postMessage type: type, message: message, @_target
 
   messageReceiver: (self) ->
     (event) ->
-      self.log "Message received: #{event.data.type} - #{event.data.message} from #{event.origin}"
+      self.log "Message received: #{event.data.type} from #{event.origin}"
 
-      # TODO: check proper event.origin
-      key = toCamelCase("on_#{event.data.type}_callback")
+      if self._target.indexOf(event.origin) isnt 0
+        return self.log new Exception "Invalid message origin"
+
+      key = toCamelCase("on_#{event.data.type}_receiver")
       if self[key] and typeof(self[key]) is 'function'
-        self.log "Runing callback - #{key}"
+        self.log "Runing receiver - #{key}"
         self[key](event.data.message)
 
   for type in Messages.types

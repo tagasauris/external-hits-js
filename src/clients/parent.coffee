@@ -14,13 +14,33 @@ class ParentClient extends BaseLogging
       logging: options.logging
       window: options.iFrame.contentWindow
       target: options.iFrame.getAttribute 'src'
-      onSuccessCallback: options.onSuccessCallback or null
-      onErrorCallback: options.onErrorCallback or null
-
-    options.iFrame.onload = options.iFrameLoadedCallback or null
+      onSuccessReceiver: @_onSuccessReceiver(@)
+      onStartedReceiver: @_onStartedReceiver(@)
+      onErrorReceiver: @_onErrorReceiver(@)
 
     @set '_iFrame', options.iFrame
     @set 'messages', messages
 
   start: () ->
-    @messages.sendStartMessage('start')
+    @messages.sendStartMessage()
+
+  _onSuccessReceiver: (self) ->
+    () ->
+      self.onSuccess()
+
+  _onStartedReceiver: (self) ->
+    () ->
+      self.onStarted()
+
+  _onErrorReceiver: (self) ->
+    () ->
+      self.onError()
+
+  onSuccess: () ->
+    @log new Exception 'onSuccess: Not implemented'
+
+  onStarted: () ->
+    @log new Exception 'onStarted: Not implemented'
+
+  onError: () ->
+    @log new Exception 'onError: Not implemented'

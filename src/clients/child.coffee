@@ -15,13 +15,13 @@ class ChildClient extends BaseLogging
       logging: options.logging
       window: parent
       target: document.referrer
+      onStartReceiver: @_onStartReceiver(@)
 
     @set 'state', options.state
     @set 'sourceUrl', options.sourceUrl
     @set 'resultsUrl', options.resultsUrl
     @set 'messages', messages
     @set 'requestTimeout', options.requestTimeout or 30000
-    @set 'requestTimeoutCallback', options.requestTimeoutCallback or null
 
   getData: (options, callback) ->
     if typeof(options) is 'function'
@@ -96,9 +96,25 @@ class ChildClient extends BaseLogging
     timeoutCallback = () ->
       xhr.abort()
       self.log "XHR Request Timeout #{method} - #{url}"
-      if typeof(self.requestTimeoutCallback) is 'function'
-        self.requestTimeoutCallback()
+      self.onRequestTimeout()
     timeout = setTimeout timeoutCallback, @requestTimeout
 
     self.log "XHR Request Calling #{method} - #{url}"
     xhr.send body
+
+  success: () ->
+    @messages.sendSuccessMessage()
+
+  error: (err) ->
+    @messages.sendErrorMessage err.message
+
+  _onStartReceiver: (self) ->
+    () ->
+      self.messages.sendStartedMessage()
+      self.onStart()
+
+  onStart: () ->
+    @log new Exception 'onStart: Not implemented'
+
+  onRequestTimeout: () ->
+    @error new Exception 'XHR Request Timeout'
