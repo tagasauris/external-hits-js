@@ -1,4 +1,4 @@
-## Installing Noejs npm
+## Installing Node npm
 
 At Least from Ubuntu 12.04, an old version (0.6.x) of Node is in the standard repository. To install, just run:
 
@@ -34,4 +34,4 @@ bower install
 python -m SimpleHTTPServer
 ```
 
-*Done!* Now open in your browser: http://127.0.0.1:8080/parent.html
+*Done!* Now go to your browser and open: [http://127.0.0.1:8080/parent.html]http://127.0.0.1:8080/parent.html
