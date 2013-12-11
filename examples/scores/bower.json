@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "homepage": "https://github.com/tagasauris/external-hits-js",
   "authors": [
-    "Daniel Kopka <daniel.kopka@gmail.com>"
+    "Daniel Kopka <daniel.kopka@10clouds.com>"
   ],
-  "description": "External HIT Tagging Example",
+  "description": "External HIT Scores Example",
   "main": "parent.html",
   "license": "MIT",
   "private": true,

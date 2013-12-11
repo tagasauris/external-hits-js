@@ -52,21 +52,26 @@
         logging: true
       });
 
+      // Function is triggered when Child sends "started" message
       client.onStarted = function() {
         console.log('Parent: onStarted');
       }
 
+      // Function is triggered when Child sends "success" message
       client.onSuccess = function() {
         console.log('Parent: onSuccess');
         alert('Success!');
       }
 
+      // Function is triggered when Child sends "error" message
       client.onError = function() {
         console.log('Parent: onError');
         alert('Something went wrong!');
       }
 
       var iFrame = document.getElementById('externalHolder');
+
+      // Waiting for iFrame to load
       iFrame.onload = function () {
         $('#loading').hide();
         $('#externalHolder').show();

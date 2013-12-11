@@ -55,49 +55,54 @@
           logging: true
         });
 
-      var saveDataCallback = function(err, response) {
-        if (err) {
-          return client.error(err);
-        }
-        client.success();
-      }
-
-      var formSubmitCallback = function(event){
-        event.preventDefault();
-        var data = [];
-
-        $(this).find('input').each(function(input){
-          var input  = $(this),
-              mo       = input.attr('mo'),
-              tags     = input.val().split(' ');
-
-            tags.forEach(function(tag){
-              data.push(new Tagasauris.TransformResult({
-                'type': 'tag',
-                'mediaObject': parseInt(mo),
-                'data': {'tag': tag}
-              }));
-            });
-        });
-
-        client.saveData(data, saveDataCallback);
-      };
-
-      var getDataCallback = function(err, response) {
-        if (err) {
-          return client.error(err);
-        }
-
-        var source   = $("#tagging-template").html(),
-            template = Handlebars.compile(source),
-            html     = template(response);
-
-        $('#container').html(html);
-        $('#tagging-form').submit(formSubmitCallback);
-      }
-
+      // Function is triggered when Parent sends "start" message
       client.onStart = function() {
-        client.getData(getDataCallback);
+        // we load the data from the sourceUrl
+        client.getData(function(err, response){
+          // if an error occurred we need to notify Parent
+          if (err) {
+            return client.error(err);
+          }
+
+          // Template rendering
+          var source  = $("#tagging-template").html(),
+            template  = Handlebars.compile(source),
+            html      = template(response);
+
+          // Adding rendered html to the DOM
+          $('#container').html(html);
+
+          $('#tagging-form').submit(function(event){
+            event.preventDefault();
+            var data = [];
+
+            // User data gathering and serialization
+            $('#tagging-form input').each(function(input){
+              var input  = $(this),
+                  mo       = input.attr('mo'),
+                  tags     = input.val().split(' ');
+
+                tags.forEach(function(tag){
+                  data.push(new Tagasauris.TransformResult({
+                    'type': 'tag',
+                    'mediaObject': parseInt(mo),
+                    'data': {'tag': tag}
+                  }));
+                });
+            });
+
+            // Sending gathered data to resultsUrl
+            client.saveData(data, function(err, response){
+              // if an error occurred we need to notify Parent
+              if (err) {
+                return client.error(err);
+              }
+
+              // notifying Parent that everything went fine
+              client.success();
+            });
+          });
+        });
       }
 
     </script>
