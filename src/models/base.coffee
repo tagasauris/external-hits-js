@@ -4,12 +4,11 @@ class ModelBase extends Base
   constructor: (options={}) ->
     options = @toObject(options)
     for [name, initial] in @_fields
-      options[name] ?= initial
-      value = @deserialize name, options[name], options
+      value = options[name] or initial
+      key = toCamelCase("deserialize_#{name}")
+      if @[key] and typeof(@[key]) is 'function'
+        value = @[key] name, value, options
       @set name, value
-
-  deserialize: (key, value, options) ->
-    value
 
   toObject: (data) ->
     tmp = {}

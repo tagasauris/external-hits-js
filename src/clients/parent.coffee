@@ -5,12 +5,14 @@ class ParentClient extends BaseLogging
     if not options.iFrame
       throw new Exception 'iFrame is required'
 
-    if typeof(options.iFrame) is 'string'
-      options.iFrame = document.getElementById(options.iFrame)
-      if not options.iFrame
-        throw new Exception 'Invalid iFrame ID'
+    if typeof(options.iFrame) isnt 'string'
+      throw new Exception 'iFrame should be ID selector'
 
-    messages = new Messages
+    options.iFrame = document.getElementById options.iFrame
+    if not options.iFrame
+      throw new Exception 'Invalid iFrame ID'
+
+    notifications = new Notifications
       logging: options.logging
       window: options.iFrame.contentWindow
       target: options.iFrame.getAttribute 'src'
@@ -19,10 +21,10 @@ class ParentClient extends BaseLogging
       onErrorReceiver: @_onErrorReceiver(@)
 
     @set '_iFrame', options.iFrame
-    @set 'messages', messages
+    @set 'notifications', notifications
 
   start: () ->
-    @messages.sendStartMessage()
+    @notifications.sendStart()
 
   _onSuccessReceiver: (self) ->
     () ->

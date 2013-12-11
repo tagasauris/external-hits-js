@@ -69,17 +69,15 @@
         alert('Something went wrong!');
       }
 
-      var iFrame = document.getElementById('externalHolder');
-
       // Waiting for iFrame to load
-      iFrame.onload = function () {
+      $('#externalHolder').ready(function(){
         $('#loading').hide();
         $('#externalHolder').show();
         $('#start').click(function(event){
           event.preventDefault();
           client.start();
         });
-      }
+      });
     </script>
   </body>
 </html>

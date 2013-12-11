@@ -11,7 +11,7 @@ class ChildClient extends BaseLogging
     if not options.resultsUrl
       throw new Exception 'Results URL is required'
 
-    messages = new Messages
+    notifications = new Notifications
       logging: options.logging
       window: parent
       target: document.referrer
@@ -20,7 +20,7 @@ class ChildClient extends BaseLogging
     @set 'state', options.state
     @set 'sourceUrl', options.sourceUrl
     @set 'resultsUrl', options.resultsUrl
-    @set 'messages', messages
+    @set 'notifications', notifications
     @set 'requestTimeout', options.requestTimeout or 30000
 
   getData: (options, callback) ->
@@ -61,8 +61,7 @@ class ChildClient extends BaseLogging
       qs.state = @get 'state'
 
     # Query
-    # Workaround for:
-    # https://github.com/10clouds/tagasauris/blob/master/tagasauris/data/middleware.py#L10
+    # Workaround for middleware
     qs.cookie_fix = 0
     encodedParams = urlEncode qs
     if encodedParams
@@ -104,14 +103,14 @@ class ChildClient extends BaseLogging
     xhr.send body
 
   success: () ->
-    @messages.sendSuccessMessage()
+    @notifications.sendSuccess()
 
   error: (err) ->
-    @messages.sendErrorMessage err.message
+    @notifications.sendError err.message
 
   _onStartReceiver: (self) ->
     () ->
-      self.messages.sendStartedMessage()
+      self.notifications.sendStarted()
       self.onStart()
 
   onStart: () ->

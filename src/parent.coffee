@@ -5,7 +5,7 @@ do (window, document) ->
   include "utils.coffee"
   include "exceptions.coffee"
   include "common.coffee"
-  include "messages.coffee"
+  include "notifications.coffee"
   include "clients/parent.coffee"
 
   window.Tagasauris =

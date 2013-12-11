@@ -7,18 +7,15 @@ class MediaObject extends ModelBase
     ['results', []],
   ]
 
-  deserialize: (key, value, options) ->
-    if key is 'items'
-      value = (new MediaObjectItem item for item in value)
+  deserializeItems: (name, value, options) ->
+    (new MediaObjectItem item for item in value)
 
-    if key is 'results'
-      results = []
-      for result in value
-        result.mediaObject = options.id
-        results.push new TransformResult(result)
-      value = results
-
-    return value
+  deserializeResults: (name, value, options) ->
+    results = []
+    for result in value
+      result.mediaObject = options.id
+      results.push new TransformResult(result)
+    return results
 
   createTransformResult: (options={}) ->
     options.mediaObject ?= @get 'id'
