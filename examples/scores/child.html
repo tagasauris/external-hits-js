@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>External HIT: Tagging</title>
+    <title>External HIT: Scores</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -20,13 +20,15 @@
   <body>
     <div id="container" class="container"></div>
 
-    <script id="tagging-template" type="text/x-handlebars-template">
-      <form id="tagging-form" class="form-horizontal" role="form">
+    <script id="scores-template" type="text/x-handlebars-template">
+      <form id="scores-form" class="form-horizontal" role="form">
         {{#each data}}
         <div class="form-group">
           <div class="col-md-4">
             <img src="{{ items.1.src }}" width="{{ items.1.width }}" height="{{ items.1.height }}"  alt="" /> <br />
-            <input id="tags_{{ id }}" mo="{{ id }}" type="text" class="form-control" placeholder="Tags" />
+            {{#each results}}
+              <input id="tag_{{ id }}" tr="{{ id }}" type="checkbox" /> {{ data.tag }} <br />
+            {{/each}}
           </div>
         </div>
         {{/each}}
@@ -68,32 +70,33 @@
 
         $(this).find('input').each(function(input){
           var input  = $(this),
-              mo       = input.attr('mo'),
-              tags     = input.val().split(' ');
+            tr       = input.attr('tr'),
+            checked  = input.prop('checked'),
+            value    = (checked === true) ? 1 : -1;
 
-            tags.forEach(function(tag){
-              data.push(new Tagasauris.TransformResult({
-                'type': 'tag',
-                'mediaObject': parseInt(mo),
-                'data': {'tag': tag}
-              }));
-            });
+          data.push(new Tagasauris.Score({
+            type: 'correctness',
+            transformResult: parseInt(tr),
+            value: value,
+            semanticValue: value
+          }));
+
         });
 
         client.saveData(data, saveDataCallback);
-      };
+      }
 
       var getDataCallback = function(err, response) {
         if (err) {
           return client.error(err);
         }
 
-        var source   = $("#tagging-template").html(),
+        var source   = $("#scores-template").html(),
             template = Handlebars.compile(source),
             html     = template(response);
 
         $('#container').html(html);
-        $('#tagging-form').submit(formSubmitCallback);
+        $('#scores-form').submit(formSubmitCallback);
       }
 
       client.onStart = function() {

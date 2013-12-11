@@ -35,11 +35,12 @@ class ChildClient extends BaseLogging
       response.data = (new MediaObject mo for mo in response.data)
       callback null, response
 
-  saveData: (options, callback) ->
+  saveData: (data, options, callback) ->
     if typeof(options) is 'function'
       callback = options
       options = {}
 
+    options.body = data
     options.endpoint ?= @get 'resultsUrl'
     options.method   ?= 'POST'
 
