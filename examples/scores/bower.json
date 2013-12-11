@@ -1,0 +1,24 @@
+{
+  "name": "tagging",
+  "version": "0.0.1",
+  "homepage": "https://github.com/tagasauris/external-hits-js",
+  "authors": [
+    "Daniel Kopka <daniel.kopka@gmail.com>"
+  ],
+  "description": "External HIT Tagging Example",
+  "main": "parent.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "bootstrap": "~3.0.3",
+    "handlebars": "~1.1.2"
+  }
+}
