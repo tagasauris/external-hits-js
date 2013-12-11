@@ -43,14 +43,19 @@
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/handlebars/handlebars.min.js"></script>
+    <script src="bower_components/purl/purl.js"></script>
     <script src="http://127.0.0.1:8000/lib/child.js"></script>
     <script type="text/javascript">
-      var client = new Tagasauris.ChildClient({
-        state: '3cfc82e07412fd1ab588182799bf57b8',
-        sourceUrl: 'http://127.0.0.1:8000/examples/scores/response.json',
-        resultsUrl: 'http://127.0.0.1:8000/examples/scores/response.json',
-        logging: true
-      });
+      var url       = $.url(),
+        state       = url.param('state'),
+        sourceUrl   = url.param('source'),
+        resultsUrl  = url.param('results'),
+        client      = new Tagasauris.ChildClient({
+          state: state,
+          sourceUrl: sourceUrl,
+          resultsUrl: resultsUrl,
+          logging: true
+        });
 
       var saveDataCallback = function(err, response) {
         if (err) {
@@ -79,7 +84,7 @@
         });
 
         client.saveData(data, saveDataCallback);
-      };
+      }
 
       var getDataCallback = function(err, response) {
         if (err) {
