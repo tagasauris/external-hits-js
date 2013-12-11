@@ -57,11 +57,21 @@
           logging: true
         });
 
-      var saveDataCallback = function(err, response) {
+      client.onStart = function() {
+        client.getData(getDataCallback);
+      }
+
+      var getDataCallback = function(err, response) {
         if (err) {
           return client.error(err);
         }
-        client.success();
+
+        var source   = $("#scores-template").html(),
+            template = Handlebars.compile(source),
+            html     = template(response);
+
+        $('#container').html(html);
+        $('#scores-form').submit(formSubmitCallback);
       }
 
       var formSubmitCallback = function(event){
@@ -86,23 +96,12 @@
         client.saveData(data, saveDataCallback);
       }
 
-      var getDataCallback = function(err, response) {
+      var saveDataCallback = function(err, response) {
         if (err) {
           return client.error(err);
         }
-
-        var source   = $("#scores-template").html(),
-            template = Handlebars.compile(source),
-            html     = template(response);
-
-        $('#container').html(html);
-        $('#scores-form').submit(formSubmitCallback);
+        client.success();
       }
-
-      client.onStart = function() {
-        client.getData(getDataCallback);
-      }
-
     </script>
   </body>
 </html>
