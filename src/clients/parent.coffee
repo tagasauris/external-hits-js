@@ -12,7 +12,7 @@ class ParentClient extends BaseLogging
     if not options.iFrame
       throw new Exception 'Invalid iFrame ID'
 
-    notifications = new Notifications
+    notify = new Notify
       logging: options.logging
       window: options.iFrame.contentWindow
       target: options.iFrame.getAttribute 'src'
@@ -21,10 +21,10 @@ class ParentClient extends BaseLogging
       onErrorReceiver: @_onErrorReceiver(@)
 
     @set '_iFrame', options.iFrame
-    @set 'notifications', notifications
+    @set 'notify', notify
 
   start: () ->
-    @notifications.sendStart()
+    @notify.start()
 
   _onSuccessReceiver: (self) ->
     () ->

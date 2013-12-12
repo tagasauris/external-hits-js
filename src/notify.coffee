@@ -1,4 +1,4 @@
-class Notifications extends BaseLogging
+class Notify extends BaseLogging
   @types: ['start', 'started', 'success', 'error']
 
   constructor: (options={}) ->
@@ -16,33 +16,33 @@ class Notifications extends BaseLogging
     messageEvent = if eventMethod is 'attachEvent' then 'onmessage' else 'message'
 
     # postMessage listener setup
-    eventer messageEvent, @notificationReceiver(@), false
+    eventer messageEvent, @notifyReceiver(@), false
 
     @set '_window', options.window
     @set '_target', options.target
 
-    for type in Notifications.types
+    for type in Notify.types
       key = toCamelCase("on_#{type}_receiver")
       if options[key]
         @set key, options[key]
 
-  sendNotification: (type, notification='') ->
+  sendNotify: (type, notify=null) ->
     @log "Sending #{type}"
-    @_window.postMessage type: type, notification: notification, @_target
+    @_window.postMessage type: type, notify: notify, @_target
 
-  notificationReceiver: (self) ->
+  notifyReceiver: (self) ->
     (event) ->
       self.log "Received #{event.data.type} from #{event.origin}"
 
       if self._target.indexOf(event.origin) isnt 0
-        return self.log new Exception 'Invalid notification origin'
+        return self.log new Exception 'Invalid notify origin'
 
       key = toCamelCase("on_#{event.data.type}_receiver")
       if self[key] and typeof(self[key]) is 'function'
-        self.log "Runing receiver #{key}"
-        self[key](event.data.notification)
+        self.log "Runing #{key}"
+        self[key](event.data.notify)
 
-  for type in Notifications.types
-    Notifications::[toCamelCase("send_#{type}")] = do (type) ->
-      (notification) ->
-        @sendNotification type, notification
+  for type in Notify.types
+    Notify::[type] = do (type) ->
+      (notify) ->
+        @sendNotify type, notify

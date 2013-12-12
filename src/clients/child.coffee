@@ -11,7 +11,7 @@ class ChildClient extends BaseLogging
     if not options.resultsUrl
       throw new Exception 'Results URL is required'
 
-    notifications = new Notifications
+    notify = new Notify
       logging: options.logging
       window: parent
       target: document.referrer
@@ -20,7 +20,7 @@ class ChildClient extends BaseLogging
     @set 'state', options.state
     @set 'sourceUrl', options.sourceUrl
     @set 'resultsUrl', options.resultsUrl
-    @set 'notifications', notifications
+    @set 'notify', notify
     @set 'requestTimeout', options.requestTimeout or 30000
 
   getData: (options, callback) ->
@@ -103,14 +103,14 @@ class ChildClient extends BaseLogging
     xhr.send body
 
   success: () ->
-    @notifications.sendSuccess()
+    @notify.success()
 
   error: (err) ->
-    @notifications.sendError err.message
+    @notify.error err.message
 
   _onStartReceiver: (self) ->
     () ->
-      self.notifications.sendStarted()
+      self.notify.started()
       self.onStart()
 
   onStart: () ->
