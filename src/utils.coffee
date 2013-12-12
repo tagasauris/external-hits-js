@@ -21,8 +21,18 @@ parseUri = (url) ->
   result = {}
   parser = document.createElement 'a'
   parser.href = url
+  keys = [
+    'protocol',
+    'hostname',
+    'host',
+    'pathname',
+    'port',
+    'search',
+    'hash',
+    'href'
+  ]
 
-  for key in ['protocol', 'hostname', 'host', 'pathname', 'port', 'search', 'hash', 'href']
+  for key in keys
     result[key] = parser[key]
 
     if key is 'search'

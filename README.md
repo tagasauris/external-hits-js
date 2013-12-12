@@ -1,3 +1,8 @@
+# External HIT SDK
+
+External HIT SDK its a pure JavaScript library for communication with Tagasauris API endpoints.
+Its main aim is to simplify and accelerate the creation of new types of HIT.
+
 # API endpoints
 
 * TransformResults `GET`, `POST` - http://../transform_results/
@@ -64,16 +69,15 @@
 * type {string}
 * value {int}
 * semanticValue {int}
-* semanticValue {int}
+* transformResult {int}
 
 ```JSON
 {
-    "id": 52,
-    "type": "tag",
-    "data": {
-          "tag": "test"
-    },
-    "media_object": 1
+    "id": 24,
+    "type": "correctness",
+    "transformResult": 2,
+    "value": 1,
+    "semanticValue": -1
 }
 ```
 
@@ -141,7 +145,7 @@ curl -v -X GET http://../transform_results/?state=098f6bcd4621d373cade4e832627b4
 
 `POST` **Response sample**
 
-```
+```JSON
 [
     {
       "id": 10,
@@ -217,7 +221,7 @@ curl -v -X GET http://../scores/?state=098f6bcd4621d373cade4e832627b4f6 \
 
 `POST` **Response sample**
 
-```
+```JSON
 [
     {
         "id": 24,
@@ -228,3 +232,7 @@ curl -v -X GET http://../scores/?state=098f6bcd4621d373cade4e832627b4f6 \
     }
 ]
 ```
+
+# SDK Implementation
+
+Checkout [examples](examples) folder for more information.
