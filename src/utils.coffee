@@ -1,3 +1,4 @@
+# encodes URL query
 urlEncode = (params) ->
   tail = []
   if params instanceof Array
@@ -12,6 +13,36 @@ urlEncode = (params) ->
       else
         tail.push "#{key}=#{encodeURIComponent(value)}"
   return tail.join '&'
+
+
+parseUri = (url) ->
+  # TODO: support for arrays
+
+  result = {}
+  parser = document.createElement 'a'
+  parser.href = url
+
+  for key in ['protocol', 'hostname', 'host', 'pathname', 'port', 'search', 'hash', 'href']
+    result[key] = parser[key]
+
+    if key is 'search'
+      search = {}
+
+      if result[key]
+        value = result[key]
+        if value.indexOf('?') is 0
+          value = value.substring 1
+
+        for part in value.split '&'
+          [_key, _value] = part.split '='
+          search[_key] = decodeURIComponent _value
+
+      result[key] = search
+
+  result.toString = () -> parser.href
+  result.requestUri = "#{result.pathname}#{result.search}"
+
+  return result
 
 
 # From Underscore

@@ -1,14 +1,22 @@
 class ChildClient extends BaseLogging
   constructor: (options={}) ->
     super options
+    options.stateKey   ?= 'state'
+    options.sourceKey  ?= 'source'
+    options.resultsKey ?= 'results'
 
-    if not options.state
+    uri        = parseUri(location.href)
+    state      = uri.search[options.stateKey]   or null
+    sourceUrl  = uri.search[options.sourceKey]  or null
+    resultsUrl = uri.search[options.resultsKey] or null
+
+    if not state
       throw new Exception 'State is required'
 
-    if not options.sourceUrl
+    if not sourceUrl
       throw new Exception 'Source URL is required'
 
-    if not options.resultsUrl
+    if not resultsUrl
       throw new Exception 'Results URL is required'
 
     notify = new Notify
@@ -17,9 +25,9 @@ class ChildClient extends BaseLogging
       target: document.referrer
       onStartReceiver: @_onStartReceiver(@)
 
-    @set 'state', options.state
-    @set 'sourceUrl', options.sourceUrl
-    @set 'resultsUrl', options.resultsUrl
+    @set 'state', state
+    @set 'sourceUrl', sourceUrl
+    @set 'resultsUrl', resultsUrl
     @set 'notify', notify
     @set 'requestTimeout', options.requestTimeout or 30000
 
