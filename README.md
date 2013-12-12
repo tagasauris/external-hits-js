@@ -1,7 +1,7 @@
 # External HIT SDK
 
 External HIT SDK its a pure JavaScript library for communication with Tagasauris API endpoints.
-Its main aim is to simplify and accelerate the creation of new types of HIT.
+Its main aim is to simplify and accelerate the creation of new HIT types.
 
 # API endpoints
 
