@@ -8,6 +8,105 @@ Its main aim is to simplify and accelerate the creation of new HIT types.
 * TransformResults `GET`, `POST` - http://../transform_results/
 * Scores `GET`, `POST` - http://../scores/
 
+
+# SDK Implementation
+
+### 1. Create simple HTML document
+
+```HTML
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>External HIT: Example</title>
+  </head>
+  <body>
+  </body>
+</html>
+```
+
+### 2. Add our SDK and initialize the client
+
+```HTML
+...
+  <body>
+  <script src="http://127.0.0.1:8000/lib/parent.js"></script>
+    <script type="text/javascript">
+      var client = new Tagasauris.ChildClient();
+    </script>
+  </body>
+...
+```
+
+### 3. Add some callbacks and listeners
+
+```JavaScript
+...
+// Function is triggered when Parent sends "start" message
+client.onStart = function() {
+    // We are requesting for data from API endpont
+    client.getData(getDataCallback);
+}
+
+// Function is triggered when getData request is completed
+var getDataCallback = function(err, response) {
+    // if an error occurred we need to notify Parent
+    if (err) {
+      return client.error(err);
+    }
+
+    // Response has two attributes config and data
+    // In this place we should render data for mTurk user
+}
+...
+```
+
+### 4. Gathering data
+
+We neeed to gather data from user and serialize to SDK Model.
+Depending on the endpoint is should be `TransformResult` or `Score` model.
+Sample jQuery implementation gathering tags from the form inputs:
+
+```JavaScript
+var data = [];
+$('input').each(function(input){
+  var input  = $(this),
+      mo     = input.attr('mo'),
+      tags   = input.val().split(' ');
+
+    tags.forEach(function(tag){
+      var model = new Tagasauris.TransformResult({
+        'type': 'tag',
+        'mediaObject': parseInt(mo),
+        'data': {'tag': tag}
+      });
+
+      data.push(model);
+    });
+});
+```
+
+### 5. Sending data
+When we have ready our SDK models we need to send them to API endpoint
+
+```JavaScript
+client.saveData(data, function(err, response){
+  // if an error occurred we need to notify Parent
+  if (err) {
+    return client.error(err);
+  }
+
+  // notifying Parent that everything went fine
+  // from that point parent will do the restt
+  client.success();
+});
+```
+
+### 6. More informations
+
+For more information checkout [examples](examples) folder.
+
+
+
 # Models
 
 ### MediaObject
@@ -232,7 +331,3 @@ curl -v -X GET http://../scores/?state=098f6bcd4621d373cade4e832627b4f6 \
     }
 ]
 ```
-
-# SDK Implementation
-
-Checkout [examples](examples) folder for more information.
