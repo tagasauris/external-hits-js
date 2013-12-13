@@ -97,7 +97,7 @@ client.saveData(data, function(err, response){
 });
 ```
 
-### 6. More informations
+### 6. More information
 
 For more information checkout [examples](examples) folder.
 
