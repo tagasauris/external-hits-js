@@ -2,7 +2,7 @@ module.exports = (grunt) ->
 
   grunt.initConfig
     clean:
-      all: ['./lib/', './tmp/']
+      lib: ['./lib/']
       tmp: ['./tmp/']
     includes:
       app:
@@ -36,6 +36,20 @@ module.exports = (grunt) ->
         max_line_length:
           level: 'warn'
       app: ['src/**/*.coffee']
+    s3:
+      options:
+        bucket: 'tagasauris-libraries'
+        access: 'public-read'
+        headers:
+          'Cache-Control': 'max-age=630720000, public',
+          'Expires': new Date(Date.now() + 63072000000).toUTCString()
+      libraries:
+        upload: [
+          src: 'lib/*'
+          dest: 'sdk/'
+          options:
+            gzip: true
+        ]
 
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -44,7 +58,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-includes'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-coffeelint'
-
+  grunt.loadNpmTasks 'grunt-s3'
 
   grunt.registerTask 'minify', [
     'uglify:lib'
@@ -57,8 +71,7 @@ module.exports = (grunt) ->
   ]
 
   grunt.registerTask 'build', [
-    'clean:all',
+    'clean',
     'compile',
-    'clean:tmp',
     'minify'
   ]
