@@ -67,11 +67,17 @@ module.exports = (grunt) ->
   grunt.registerTask 'compile', [
     'coffeelint:app',
     'includes',
-    'coffee:tmp',
+    'coffee:tmp'
   ]
 
   grunt.registerTask 'build', [
     'clean',
     'compile',
     'minify'
+  ]
+
+  grunt.registerTask 'jenkins', [
+    'build',
+    's3',
+    'clean'
   ]
