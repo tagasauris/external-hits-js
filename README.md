@@ -27,23 +27,20 @@ Its main aim is to simplify and accelerate the creation of new HIT types.
 ### 2. Add our SDK and initialize the client
 
 ```HTML
-...
-  <body>
-  <script src="http://127.0.0.1:8000/lib/parent.js"></script>
-    <script type="text/javascript">
-      var client = new Tagasauris.ChildClient();
-    </script>
-  </body>
-...
+<body>
+<script src="http://.../lib/parent.js"></script>
+<script type="text/javascript">
+  var client = new Tagasauris.ChildClient();
+</script>
+</body>
 ```
 
 ### 3. Add some callbacks and listeners
 
 ```JavaScript
-...
 // Function is triggered when Parent sends "start" message
 client.onStart = function() {
-    // We are requesting for data from API endpont
+    // We are requesting data from API endpont
     client.getData(getDataCallback);
 }
 
@@ -53,16 +50,15 @@ var getDataCallback = function(err, response) {
     if (err) {
       return client.error(err);
     }
-
-    // Response has two attributes config and data
     // In this place we should render data for mTurk user
 }
-...
 ```
+
+`response` has two attributtes config and data. Data is an Array of `MediaObject` model and config is a simple JavaScript object.
 
 ### 4. Gathering data
 
-We neeed to gather data from user and serialize to SDK Model.
+We neeed to gather data from user and serialize them to SDK Model.
 Depending on the endpoint is should be `TransformResult` or `Score` model.
 Sample jQuery implementation gathering tags from the form inputs:
 
@@ -96,7 +92,7 @@ client.saveData(data, function(err, response){
   }
 
   // notifying Parent that everything went fine
-  // from that point parent will do the restt
+  // from that point Parent will do the restt
   client.success();
 });
 ```
