@@ -28,7 +28,7 @@ Its main aim is to simplify and accelerate the creation of new HIT types.
 
 ```HTML
 <body>
-<script src="http://.../child.min.js"></script>
+<script src="//s3.amazonaws.com/tagasauris-libraries/sdk/child.min.js"></script>
 <script type="text/javascript">
   var client = new Tagasauris.ChildClient();
 </script>
