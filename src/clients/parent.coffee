@@ -20,7 +20,7 @@ class ParentClient extends BaseLogging
       onStartedReceiver: @_onStartedReceiver(@)
       onErrorReceiver: @_onErrorReceiver(@)
 
-    @set '_iFrame', options.iFrame
+    @set 'iFrame', options.iFrame
     @set 'notify', notify
 
   start: () ->
