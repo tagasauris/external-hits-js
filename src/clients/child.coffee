@@ -74,6 +74,7 @@ class ChildClient extends BaseLogging
     encodedParams = urlEncode qs
     if encodedParams
       url += '?' + encodedParams
+    url = url.replace '//?', '/?'
 
     xhr = new XMLHttpRequest()
     xhr.open method, url, true
