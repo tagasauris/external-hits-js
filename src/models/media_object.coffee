@@ -20,3 +20,16 @@ class MediaObject extends ModelBase
   createTransformResult: (options={}) ->
     options.mediaObject ?= @get 'id'
     new TransformResult(options)
+
+  getClosestItem: (width) ->
+    cacheKey = "_closestItem_#{width}"
+
+    if not @get cacheKey
+      closest = null
+      for item in @items
+        if closest is null or Math.abs(item.width - width) < Math.abs(closest.width - width)
+          closest = item
+      @set cacheKey, closest
+
+    return @get cacheKey
+
