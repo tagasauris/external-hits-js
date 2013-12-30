@@ -21,13 +21,13 @@ class MediaObject extends ModelBase
     options.mediaObject ?= @get 'id'
     new TransformResult(options)
 
-  getClosestItem: (width) ->
-    cacheKey = "_closestItem_#{width}"
+  getClosestItem: (value, type='width') ->
+    cacheKey = "_closestItem_#{type}_#{value}"
 
     if not @get cacheKey
       closest = null
       for item in @items
-        if closest is null or Math.abs(item.width - width) < Math.abs(closest.width - width)
+        if closest is null or Math.abs(item[type] - value) < Math.abs(closest[type] - value)
           closest = item
       @set cacheKey, closest
 
