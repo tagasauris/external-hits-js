@@ -19,6 +19,7 @@ class ParentClient extends BaseLogging
       onSuccessReceiver: @_onSuccessReceiver(@)
       onStartedReceiver: @_onStartedReceiver(@)
       onErrorReceiver: @_onErrorReceiver(@)
+      onIFrameChangeReceiver: @_onIFrameChangeReceiver(@)
 
     @set 'iFrame', options.iFrame
     @set 'notify', notify
@@ -37,6 +38,10 @@ class ParentClient extends BaseLogging
   _onErrorReceiver: (self) ->
     () ->
       self.onError()
+
+  _onIFrameChangeReceiver: (self) ->
+    (size) ->
+      self.iFrame.style.height = "#{size.height}px"
 
   onSuccess: () ->
     @log new Exception 'onSuccess: Not implemented'

@@ -63,3 +63,13 @@ toCamelCase = (text) ->
 # From CamelCase
 toUnderscore = (text) ->
   text.replace /([A-Z])/g, ($1) -> '_' + $1.toLowerCase()
+
+
+getDocumentSize = () ->
+  body = document.body
+  html = document.documentElement
+  height = Math.max body.scrollHeight, body.offsetHeight,
+    html.clientHeight, html.scrollHeight, html.offsetHeight
+  width = Math.max body.scrollWidth, body.offsetWidth,
+    html.clientWidth, html.scrollWidth, html.offsetWidth
+  return width: width, height: height

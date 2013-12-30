@@ -1,5 +1,5 @@
 class Notify extends BaseLogging
-  @types: ['start', 'started', 'success', 'error']
+  @types: ['start', 'started', 'success', 'error', 'iFrameChange']
 
   constructor: (options={}) ->
     super options
@@ -23,6 +23,7 @@ class Notify extends BaseLogging
 
     for type in Notify.types
       key = toCamelCase("on_#{type}_receiver")
+      console.log key
       if options[key]
         @set key, options[key]
 
