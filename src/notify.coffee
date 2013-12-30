@@ -22,8 +22,7 @@ class Notify extends BaseLogging
     @set '_target', options.target
 
     for type in Notify.types
-      key = toCamelCase("on_#{type}_receiver")
-      console.log key
+      key = toCamelCase "on_#{type}_receiver"
       if options[key]
         @set key, options[key]
 
