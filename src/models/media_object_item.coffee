@@ -3,6 +3,7 @@ class MediaObjectItem extends ModelBase
     ['id', null],
     ['type', null],
     ['src', null],
+    ['code', null],
     ['width', 0],
     ['height', 0],
   ]

@@ -21,32 +21,43 @@ class MediaObject extends ModelBase
     options.mediaObject ?= @get 'id'
     new TransformResult(options)
 
-  getOptimal: (value, fn, keyDesc, type='width', forceGet=false) ->
-    cacheKey = "_#{keyDesc}_#{type}_#{value}"
+  getOptimal: (value, dimension, eval_func, filter_func) ->
+    if not filter_func
+      filter_func = () -> true
 
-    if not @get cacheKey or forceGet
-      closest = null
-      for item in @items
-        if closest is null or fn(item, closest, type, value)
+    closest = null
+    for item in @items
+      if filter_func(item)
+        if closest is null or eval_func(item, closest, dimension, value)
           closest = item
-      @set cacheKey, closest
 
-    return @get cacheKey
+    return closest
 
-  getClosestItem: (value, type='width', forceGet=false) ->
+  getClosestItem: (value, dimension='width', filter_func) ->
     @getOptimal(
       value
-      (item, closest, type, width) -> Math.abs(item[type] - value) < Math.abs(closest[type] - value)
-      'closestItem'
-      type
-      forceGet
+      dimension
+      (item, closest, dimension, value) -> Math.abs(item[dimension] - value) < Math.abs(closest[dimension] - value)
+      filter_func
     )
 
-  getBiggestPossibleItem: (value, type='width', forceGet=false) ->
+  getBiggestPossibleItem: (value, dimension='width', filter_func) ->
     @getOptimal(
       value
-      (item, closest, type, width) -> value > item[type] > closest[type] or (closest[type] > value and closest[type] > item[type])
-      'biggestPossibleItem'
-      type
-      forceGet
+      dimension
+      (item, closest, dimension, value) -> value > item[dimension] > closest[dimension] or (closest[dimension] > value and closest[dimension] > item[dimension])
+      filter_func
     )
+
+  isRectoVerso: () ->
+    recto = false
+    verso = false
+    for item in @items
+      if item.code?
+        if item.code == 'recto'
+          recto = true
+          return true if verso
+        else if item.code == 'verso'
+          verso = true
+          return true if recto
+    return recto and verso
