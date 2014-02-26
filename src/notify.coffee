@@ -1,5 +1,5 @@
 class Notify extends BaseLogging
-  @types: ['start', 'started', 'success', 'error', 'iFrameChange']
+  @types: ['start', 'started', 'success', 'error', 'iFrameChange', 'scrollTop']
 
   constructor: (options={}) ->
     super options
@@ -8,7 +8,7 @@ class Notify extends BaseLogging
       throw new Exception 'Window is required'
 
     if not options.target
-      throw new Exception 'Target is required'
+      throw new Exception 'Target is required. Possible reasons: your protocols (http, https) must match'
 
     # Browser test for proper listener and event method
     eventMethod  = if window.addEventListener then 'addEventListener' else 'attachEvent'

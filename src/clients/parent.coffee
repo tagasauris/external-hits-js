@@ -20,6 +20,7 @@ class ParentClient extends BaseLogging
       onStartedReceiver: @_onStartedReceiver(@)
       onErrorReceiver: @_onErrorReceiver(@)
       onIFrameChangeReceiver: @_onIFrameChangeReceiver(@)
+      onScrollTopReceiver: @_onScrollTopReceiver(@)
 
     @set 'iFrame', options.iFrame
     @set 'notify', notify
@@ -42,6 +43,10 @@ class ParentClient extends BaseLogging
   _onIFrameChangeReceiver: (self) ->
     (size) ->
       self.iFrame.style.height = "#{size.height}px"
+
+  _onScrollTopReceiver: (self) ->
+    () ->
+      $("body").animate({scrollTop:0}, 'fast')
 
   onSuccess: () ->
     @log new Exception 'onSuccess: Not implemented'
