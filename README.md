@@ -147,6 +147,7 @@ For more information checkout [examples](examples) folder.
 * type {string}
 * data {object}
 * mediaObject {int}
+* consensusVote {bool}
 
 ```JSON
 {
@@ -155,7 +156,8 @@ For more information checkout [examples](examples) folder.
     "data": {
           "tag": "test"
     },
-    "media_object": 1
+    "media_object": 1,
+    "consensus_vote": false
 }
 ```
 
