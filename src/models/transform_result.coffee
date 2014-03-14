@@ -4,6 +4,7 @@ class TransformResult extends ModelBase
     ['type', null],
     ['data', {}],
     ['mediaObject', null],
+    ['consensusVote', false],
   ]
 
   setTag: (tag) ->
