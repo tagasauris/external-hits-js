@@ -21,12 +21,16 @@ class ParentClient extends BaseLogging
       onErrorReceiver: @_onErrorReceiver(@)
       onIFrameChangeReceiver: @_onIFrameChangeReceiver(@)
       onScrollTopReceiver: @_onScrollTopReceiver(@)
+      onPreviewReceiver: @_onPreviewReceiver(@)
 
     @set 'iFrame', options.iFrame
     @set 'notify', notify
 
   start: () ->
     @notify.start()
+
+  preview: () ->
+    @notify.preview()
 
   _onSuccessReceiver: (self) ->
     () ->
@@ -48,6 +52,10 @@ class ParentClient extends BaseLogging
     () ->
       $("body").animate({scrollTop:0}, 'fast')
 
+  _onPreviewReceiver: (self) ->
+    () ->
+      self.onPreview()
+
   onSuccess: () ->
     @log new Exception 'onSuccess: Not implemented'
 
@@ -56,3 +64,6 @@ class ParentClient extends BaseLogging
 
   onError: () ->
     @log new Exception 'onError: Not implemented'
+
+  onPreview: () ->
+    @log new Exception 'onPreview: Not implemented'
