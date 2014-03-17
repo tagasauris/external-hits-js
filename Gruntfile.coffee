@@ -71,7 +71,7 @@ module.exports = (grunt) ->
   ]
 
   grunt.registerTask 'build', [
-    # 'clean',
+    'clean',
     'compile',
     'minify'
   ]
