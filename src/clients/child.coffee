@@ -142,7 +142,7 @@ class ChildClient extends BaseLogging
     @log new Exception 'onStart: Not implemented'
 
   onPreview: () ->
-    @log new Exception('onPreview: Not implemented')
+    @log new Exception 'onPreview: Not implemented'
 
   onRequestTimeout: () ->
     @error new Exception 'XHR Request Timeout'
