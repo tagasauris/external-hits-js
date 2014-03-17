@@ -24,6 +24,7 @@ class ChildClient extends BaseLogging
       window: parent
       target: document.referrer
       onStartReceiver: @_onStartReceiver(@)
+      onPreviewReceiver: @_onPreviewReceiver(@)
 
     @set 'state', state
     @set 'sourceUrl', sourceUrl
@@ -132,8 +133,16 @@ class ChildClient extends BaseLogging
       self.notify.started()
       self.onStart()
 
+  _onPreviewReceiver: (self) ->
+    () ->
+      self.notify.preview()
+      self.onPreview()
+
   onStart: () ->
     @log new Exception 'onStart: Not implemented'
+
+  onPreview: () ->
+    @log new Exception 'onPreview: Not implemented'
 
   onRequestTimeout: () ->
     @error new Exception 'XHR Request Timeout'
