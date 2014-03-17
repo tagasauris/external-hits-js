@@ -1,5 +1,13 @@
 class Notify extends BaseLogging
-  @types: ['start', 'started', 'success', 'error', 'iFrameChange', 'scrollTop']
+  @types: [
+    'preview',
+    'start',
+    'started',
+    'success',
+    'error',
+    'iFrameChange',
+    'scrollTop',
+  ]
 
   constructor: (options={}) ->
     super options
