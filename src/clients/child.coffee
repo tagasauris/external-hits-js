@@ -128,6 +128,11 @@ class ChildClient extends BaseLogging
   error: (err) ->
     @notify.error err.message
 
+  progress: (current, total) ->
+    @notify.progress
+      current: current
+      total: total
+
   _onStartReceiver: (self) ->
     () ->
       self.notify.started()

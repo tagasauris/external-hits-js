@@ -7,6 +7,7 @@ class Notify extends BaseLogging
     'error',
     'iFrameChange',
     'scrollTop',
+    'progress',
   ]
 
   constructor: (options={}) ->
