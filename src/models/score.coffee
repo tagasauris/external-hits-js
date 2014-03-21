@@ -3,6 +3,6 @@ class Score extends ModelBase
     ['id', null],
     ['type', null],
     ['value', null],
-    ['semanticValue', null],
+    ['semanticValue', 0],
     ['transformResult', null],
   ]
