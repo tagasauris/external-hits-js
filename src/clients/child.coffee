@@ -1,9 +1,10 @@
 class ChildClient extends BaseLogging
   constructor: (options={}) ->
     super options
-    options.stateKey   ?= 'state'
-    options.sourceKey  ?= 'source'
-    options.resultsKey ?= 'results'
+    options.stateKey         ?= 'state'
+    options.sourceKey        ?= 'source'
+    options.resultsKey       ?= 'results'
+    options.sendDocumentSize ?= true
 
     uri        = parseUri(location.href)
     state      = uri.search[options.stateKey]   or null
@@ -34,13 +35,15 @@ class ChildClient extends BaseLogging
 
     self = @
     self._documentSize = null
-    window.setInterval () ->
-      size = getDocumentSize()
-      if not self._documentSize or self._documentSize.width isnt size.width or self._documentSize.height isnt size.height
-        self._documentSize = size
-        self.notify.iFrameChange size
-    ,
-      300
+
+    if options.sendDocumentSize is true
+      window.setInterval () ->
+        size = getDocumentSize()
+        if not self._documentSize or self._documentSize.width isnt size.width or self._documentSize.height isnt size.height
+          self._documentSize = size
+          self.notify.iFrameChange size
+      ,
+        300
 
   getData: (options, callback) ->
     if typeof(options) is 'function'
