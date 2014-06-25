@@ -47,11 +47,21 @@ class ParentClient extends BaseLogging
 
   _onIFrameChangeReceiver: (self) ->
     (size) ->
-      self.iFrame.style.height = "#{size.height}px"
+      if jQuery? and size.sendDocumentSize is false
+        $window         = $ window
+        $iframe         = $ self.iFrame
+        iframeTopOffset = $iframe.offset().top
+
+        $window.resize () ->
+          $iframe.height($window.height() - iframeTopOffset)
+        .resize()
+      else
+        self.iFrame.style.height = "#{size.height}px"
 
   _onScrollTopReceiver: (self) ->
     () ->
-      $("body").animate({scrollTop:0}, 'fast')
+      if jQuery?
+        $("body").animate {scrollTop:0}, 'fast'
 
   _onPreviewReceiver: (self) ->
     () ->
