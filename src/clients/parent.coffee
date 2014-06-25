@@ -50,11 +50,15 @@ class ParentClient extends BaseLogging
       if jQuery? and size.sendDocumentSize is false
         $window         = $ window
         $iframe         = $ self.iFrame
-        iframeTopOffset = $iframe.offset().top
+        iframeTopOffset = $iframe.show().offset().top
+
+        $('html').css 'overflow', 'auto'
+        $iframe.css 'minHeight', 0
 
         $window.resize () ->
           $iframe.height($window.height() - iframeTopOffset)
         .resize()
+
       else
         self.iFrame.style.height = "#{size.height}px"
 
