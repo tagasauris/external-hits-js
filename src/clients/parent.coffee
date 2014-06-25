@@ -57,7 +57,7 @@ class ParentClient extends BaseLogging
 
         $window.resize () ->
           $iframe.height($window.height() - iframeTopOffset)
-        .resize();
+        .resize()
 
       else
         self.iFrame.style.height = "#{size.height}px"
