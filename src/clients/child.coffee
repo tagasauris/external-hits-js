@@ -33,17 +33,20 @@ class ChildClient extends BaseLogging
     @set 'notify', notify
     @set 'requestTimeout', options.requestTimeout or 30000
 
-    self = @
-    self._documentSize = null
+    self                     = @
+    self._documentSize       = null
+    sendDocumentSizeCallback = () ->
+      size                  = getDocumentSize()
+      size.sendDocumentSize = options.sendDocumentSize
+
+      if not self._documentSize or self._documentSize.width isnt size.width or self._documentSize.height isnt size.height
+        self._documentSize = size
+        self.notify.iFrameChange size
 
     if options.sendDocumentSize is true
-      window.setInterval () ->
-        size = getDocumentSize()
-        if not self._documentSize or self._documentSize.width isnt size.width or self._documentSize.height isnt size.height
-          self._documentSize = size
-          self.notify.iFrameChange size
-      ,
-        300
+      window.setInterval sendDocumentSizeCallback, 300
+    else
+      sendDocumentSizeCallback()
 
   getData: (options, callback) ->
     if typeof(options) is 'function'
