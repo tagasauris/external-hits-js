@@ -31,6 +31,8 @@ module.exports = (grunt) ->
       build:
         files: '**/*.coffee'
         tasks: ['build']
+
+    
     coffeelint:
       options:
         max_line_length:
@@ -50,6 +52,12 @@ module.exports = (grunt) ->
           options:
             gzip: true
         ]
+    connect:
+      development:
+        options:
+          livereload: true,
+          port: 1337,
+          base: './lib'
 
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -59,6 +67,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-coffeelint'
   grunt.loadNpmTasks 'grunt-s3'
+  grunt.loadNpmTasks 'grunt-contrib-connect'
 
   grunt.registerTask 'minify', [
     'uglify:lib'
@@ -80,4 +89,11 @@ module.exports = (grunt) ->
     'build',
     's3',
     'clean'
+  ]
+  
+  grunt.registerTask 'development', [
+    'build',
+    'connect:development',
+    'watch'
+      
   ]
