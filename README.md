@@ -8,6 +8,10 @@ Its main aim is to simplify and accelerate the creation of new HIT types.
 * TransformResults `GET`, `POST` - http://../transform_results/
 * Scores `GET`, `POST` - http://../scores/
 
+# Development Server
+```grunt development```
+To run development server on port 1337.  This will server the lib/ directory - which contains the parent and child combined and minified files.
+
 
 # SDK Implementation
 
