@@ -4,6 +4,7 @@ class Notify extends BaseLogging
     'start',
     'started',
     'success',
+    'updateSuccess',
     'error',
     'iFrameChange',
     'scrollTop',

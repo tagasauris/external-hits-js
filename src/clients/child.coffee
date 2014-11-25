@@ -4,12 +4,14 @@ class ChildClient extends BaseLogging
     options.stateKey         ?= 'state'
     options.sourceKey        ?= 'source'
     options.resultsKey       ?= 'results'
+    options.progressKey      ?= 'progress'
     options.sendDocumentSize ?= true
 
     uri        = parseUri(location.href)
     state      = uri.search[options.stateKey]   or null
     sourceUrl  = uri.search[options.sourceKey]  or null
     resultsUrl = uri.search[options.resultsKey] or null
+    progressUrl = uri.search[options.progressKey] or null
 
     if not state
       throw new Exception 'State is required'
@@ -30,6 +32,7 @@ class ChildClient extends BaseLogging
     @set 'state', state
     @set 'sourceUrl', sourceUrl
     @set 'resultsUrl', resultsUrl
+    @set 'progressUrl', progressUrl
     @set 'notify', notify
     @set 'requestTimeout', options.requestTimeout or 30000
 
@@ -69,6 +72,19 @@ class ChildClient extends BaseLogging
     options.endpoint ?= @get 'resultsUrl'
     options.method   ?= 'POST'
 
+    @request options, (err, response)->
+      return callback err, response if err
+      callback null, response
+  
+  saveProgress: (data, options, callback) ->
+    if typeof(options) is 'function'
+      callback = options
+      options = {}
+    
+    options.body = data
+    options.endpoint ?= @get 'progressUrl'
+    options.method   ?= 'POST'
+    
     @request options, (err, response)->
       return callback err, response if err
       callback null, response
@@ -130,6 +146,9 @@ class ChildClient extends BaseLogging
 
   success: () ->
     @notify.success()
+
+  updateSuccess: () ->
+    @notify.updateSuccess()
 
   error: (err) ->
     @notify.error err.message
