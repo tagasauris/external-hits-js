@@ -84,7 +84,7 @@ class ChildClient extends BaseLogging
     options.body = data
     options.endpoint ?= @get 'progressUrl'
     options.method   ?= 'POST'
-    console.log(options)
+
     if options.endpoint
       @request options, (err, response)->
         return callback err, response if err
