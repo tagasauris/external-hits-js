@@ -84,7 +84,8 @@ class ChildClient extends BaseLogging
     options.body = data
     options.endpoint ?= @get 'progressUrl'
     options.method   ?= 'POST'
-    console.log(options)
+    options.requestTimeout = 180000
+
     if options.endpoint
       @request options, (err, response)->
         return callback err, response if err
@@ -97,7 +98,8 @@ class ChildClient extends BaseLogging
     body     = JSON.stringify options.body or {}
     qs       = options.qs or {}
     url      = endpoint
-
+    requestTimeout = options.requestTimeout or @requestTimeout
+    
     # Auth
     if @get 'state'
       qs.state = @get 'state'
@@ -140,7 +142,7 @@ class ChildClient extends BaseLogging
       xhr.abort()
       self.log "XHR Request Timeout #{method} - #{url}"
       self.onRequestTimeout()
-    timeout = setTimeout timeoutCallback, @requestTimeout
+    timeout = setTimeout timeoutCallback, requestTimeout
 
     self.log "XHR Request Calling #{method} - #{url}"
     xhr.send body
