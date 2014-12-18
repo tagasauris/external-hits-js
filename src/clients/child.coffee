@@ -71,6 +71,7 @@ class ChildClient extends BaseLogging
     options.body = data
     options.endpoint ?= @get 'resultsUrl'
     options.method   ?= 'POST'
+    options.requestTimeout = 180000
 
     @request options, (err, response)->
       return callback err, response if err
