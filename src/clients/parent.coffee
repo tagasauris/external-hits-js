@@ -53,7 +53,6 @@ class ParentClient extends BaseLogging
         iframeTopOffset = $iframe.show().offset().top
 
         $('html').css 'overflow', 'auto'
-        $iframe.css 'minHeight', 0
 
         $window.resize () ->
           $iframe.height($window.height() - iframeTopOffset)
