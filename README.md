@@ -1,6 +1,6 @@
 # External HIT SDK
 
-[![Build Status](ci.tagasauris.com/buildStatus/icon?job=external-hit-js)](ci.tagasauris.com/job/external-hit-js/)
+[![Build Status](http://ci.tagasauris.com/buildStatus/icon?job=external-hit-js)](http://ci.tagasauris.com/job/external-hit-js/)
 
 External HIT SDK its a pure JavaScript library for communication with Tagasauris API endpoints.
 Its main aim is to simplify and accelerate the creation of new HIT types.
