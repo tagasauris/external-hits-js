@@ -11,8 +11,13 @@ Its main aim is to simplify and accelerate the creation of new HIT types.
 * Scores `GET`, `POST` - http://../scores/
 
 # Development Server
+To run development server on port 1337 enter the following command from the root directory of the repo.  
+
 ```grunt development```
-To run development server on port 1337.  This will server the lib/ directory - which contains the parent and child combined and minified files.
+
+This will server the lib/ directory - which contains the parent and child combined and minified files.  It can be used to test the files, and linked up to both the angular-hits repo, and the Tagasauris repo.
+
+
 
 
 # SDK Implementation
